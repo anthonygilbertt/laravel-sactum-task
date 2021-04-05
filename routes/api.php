@@ -39,4 +39,7 @@ Route::post('/tokens/create', function (Request $request) {
     // if ($user->tokenCan('server:update')) {
     //     //
     // }
+
+    return $request->user()->id === $server->user_id &&
+       $request->user()->tokenCan('server:update');
 });
