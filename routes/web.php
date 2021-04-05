@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Task;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,13 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+/**
+ * Display All Tasks
+ */
 Route::get('/', function () {
-    return view('tasks');
+    return view('tasks', [
+        'tasks' => Task::orderBy('created_at', 'asc')->get()
+    ]);
 });
 
 
@@ -30,6 +36,35 @@ Route::get('/register', function () {
     return view('auth/register');
 });
 
+
+Route::post('/task', function (Request $request) {
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|max:255',
+    ]);
+
+    if ($validator->fails()) {
+        return redirect('/')
+            ->withInput()
+            ->withErrors($validator);
+    }
+
+    $task = new Task;
+    $task->name = $request->name;
+    $task->save();
+
+    return redirect('/');
+});
+
+
+
+/**
+ * Delete Task
+ */
+Route::delete('/task/{id}', function ($id) {
+    Task::findOrFail($id)->delete();
+
+    return redirect('/');
+});
 
 // Route::get('auth/login', 'Auth\AuthController@getLogin');
 // Route::post('auth/login', 'Auth\AuthController@postLogin');

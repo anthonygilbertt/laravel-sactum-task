@@ -25,11 +25,26 @@ class TaskController extends Controller
      */
     public function store(Request $request) //for creating
     {
+
+        $tasks = Task::orderBy('created_at', 'asc')->get();
+
         $request->validate ([
-            'name' => 'required'
+            'name' => 'required|max:255'
         ]);
 
-        return Task::create($request->all());
+        if ($validator->fails()) {
+            return redirect('/')
+            -> withInput()
+            ->withErrors($validator);
+        }
+
+
+        // Create The Task...
+        $this->task = $task;
+        $task->name = $request->name;
+        $task->save();
+
+        // return Task::create($request->all());
     }
 
     /**
