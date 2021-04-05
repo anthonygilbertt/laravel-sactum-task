@@ -30,11 +30,14 @@
 <body id="app-layout">
     <nav class="navbar navbar-default justify-content-center">
         <div class="container">
-            <div class="navbar-header justify-content-center">
+            <div class="navbar-header ">
 
                 <!-- Branding Image -->
                 <a class="navbar-brand justify-content-center" href="{{ url('/') }}">
                     Task List
+                </a>
+                <a class="navbar-brand justify-content-end" href="{{ url('/login') }}">
+                    Logout
                 </a>
             </div>
 
